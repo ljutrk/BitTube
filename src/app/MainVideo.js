@@ -2,7 +2,11 @@ import React from 'react';
 
 const MainVideo = (props) => {
 
-    const youTubeSrc = `https://www.youtube.com/embed/${props.video.id}?autoplay=0`;
+    let youTubeSrc = `https://www.youtube.com/embed/${props.sideVideoId}?autoplay=1`;
+
+    if (props.sideVideoId === "") {
+        youTubeSrc = `https://www.youtube.com/embed/${props.video.id}?autoplay=0`;
+    }
 
     return (
         <div className="container">
