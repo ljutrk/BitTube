@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       videos: [],
       defaultSearch: "javaScript",
-      sideVideoId: ""
+      sideVideoIndex: ""
     }
   }
 
@@ -26,12 +26,12 @@ class App extends Component {
       })
   }
 
-  searchFetchHandler = (searchInput) => {
+  searchFetchHandler = (searchInput) => {    
     this.fetchMeStuff(searchInput)
   }
 
-  sideVideoFetchHandler = (sideVideoId) => {
-    this.setState({ sideVideoId })
+  sideVideoFetchHandler = (sideVideoIndex) => {
+    this.setState({ sideVideoIndex })
   }
 
   render() {
@@ -41,13 +41,11 @@ class App extends Component {
 
     return (
       <Fragment>
-        <Search searchFetchHandler={this.searchFetchHandler} />
-        <div className="row">
-          <div className="col s6">
-            <MainVideo video={this.state.videos[0]} sideVideoId={this.state.sideVideoId} />
-          </div>
-          <div className="col s6">
-            <SideVideos videos={this.state.videos} clickHandler={this.sideVideoFetchHandler} />
+        <div class="container">
+          <Search searchFetchHandler={this.searchFetchHandler} />
+          <div className="row">
+              <MainVideo videos={this.state.videos} sideVideoIndex={this.state.sideVideoIndex} />
+              <SideVideos videos={this.state.videos} clickHandler={this.sideVideoFetchHandler} />
           </div>
         </div>
       </Fragment>

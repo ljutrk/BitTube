@@ -2,19 +2,29 @@ import React from 'react';
 
 const MainVideo = (props) => {
 
-    let youTubeSrc = `https://www.youtube.com/embed/${props.sideVideoId}?autoplay=1`;
-
-    if (props.sideVideoId === "") {
-        youTubeSrc = `https://www.youtube.com/embed/${props.video.id}?autoplay=0`;
+    const isSideVideo = () => {
+        if (props.sideVideoIndex !== "") {
+            return props.sideVideoIndex
+        }
+        return 0
     }
 
+    const autoplay = () => {
+        if (props.sideVideoIndex !== "") {
+            return 1
+        }
+        return 0
+    }
+
+    const youTubeSrc = `https://www.youtube.com/embed/${props.videos[isSideVideo()].id}?autoplay=${autoplay()}`;
+
     return (
-        <div className="container">
-            <div className="col s8">
-                <iframe title="main video" id="ytplayer" type="text/html" width="640" height="360"
-                    src={youTubeSrc}
-                    frameBorder="0"></iframe>
-            </div>
+        <div className="col s8 youTubeFrame">
+            <iframe title="main video" id="ytplayer" type="text/html" width="600" height="340"
+                src={youTubeSrc}
+                frameBorder="0"></iframe>
+            <p id="mainVideoTitle">{props.videos[isSideVideo()].title}</p>
+            <p>{props.videos[isSideVideo()].description}</p>
         </div>
     );
 }
