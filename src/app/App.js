@@ -2,26 +2,30 @@ import React, { Component, Fragment } from 'react';
 import './App.css';
 import { fetchVideos } from '../services/apiService';
 import { MainVideo } from './MainVideo';
+import { Search } from './Search';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      videos: []
+      videos: [],
+      defaultSearch: "javaScript"
     }
   }
 
   componentDidMount() {
-
-    this.fetchMeStuff()
-
+    this.fetchMeStuff(this.state.defaultSearch)
   }
 
-  fetchMeStuff = () => {
-    fetchVideos()
+  fetchMeStuff = (searchInput) => {
+    fetchVideos(searchInput)
       .then(videos => {
         this.setState({ videos })
       })
+  }
+
+  searchFetchHandler = (searchInput) => {
+    this.fetchMeStuff(searchInput)
   }
 
   render() {
@@ -31,8 +35,12 @@ class App extends Component {
 
     return (
       <Fragment>
-        <div className="col s6">
-          <MainVideo video={this.state.videos[0]} />
+
+        <Search searchFetchHandler={this.searchFetchHandler} />
+        <div className="row">
+          <div className="col s6">
+            <MainVideo video={this.state.videos[0]} />
+          </div>
         </div>
       </Fragment>
     );
