@@ -3,13 +3,15 @@ import './App.css';
 import { fetchVideos } from '../services/apiService';
 import { MainVideo } from './MainVideo';
 import { Search } from './Search';
+import { SideVideos } from './SideVideos';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       videos: [],
-      defaultSearch: "javaScript"
+      defaultSearch: "javaScript",
+      sideVideoIndex: ""
     }
   }
 
@@ -24,8 +26,12 @@ class App extends Component {
       })
   }
 
-  searchFetchHandler = (searchInput) => {
+  searchFetchHandler = (searchInput) => {    
     this.fetchMeStuff(searchInput)
+  }
+
+  sideVideoFetchHandler = (sideVideoIndex) => {
+    this.setState({ sideVideoIndex })
   }
 
   render() {
@@ -35,11 +41,11 @@ class App extends Component {
 
     return (
       <Fragment>
-
-        <Search searchFetchHandler={this.searchFetchHandler} />
-        <div className="row">
-          <div className="col s6">
-            <MainVideo video={this.state.videos[0]} />
+        <div class="container">
+          <Search searchFetchHandler={this.searchFetchHandler} />
+          <div className="row">
+              <MainVideo videos={this.state.videos} sideVideoIndex={this.state.sideVideoIndex} />
+              <SideVideos videos={this.state.videos} clickHandler={this.sideVideoFetchHandler} />
           </div>
         </div>
       </Fragment>
