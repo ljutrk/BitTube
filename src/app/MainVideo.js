@@ -1,34 +1,56 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
+import { PreviousVideo } from './PreviousVideo';
 
-const MainVideo = (props) => {
-
-    const isSideVideo = () => {
-        if (props.sideVideoIndex !== "") {
-            return props.sideVideoIndex
+class MainVideo extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            historyCleared: false
         }
-        return 0
     }
 
-    const autoplay = () => {
-        if (props.sideVideoIndex !== "") {
-            return 1
+    mapPreviousVideos = () => {
+        if (sessionStorage.key("watchedVideos") === null) {
+            return
+        } else {
+            return JSON.parse(sessionStorage.getItem("watchedVideos")).reverse().map((video, index) => {
+                return <PreviousVideo key={index} video={video} previousVideosFetchHandler={this.props.previousVideosFetchHandler} />
+            })
         }
-        return 0
     }
 
-    const youTubeSrc = `https://www.youtube.com/embed/${props.videos[isSideVideo()].id}?autoplay=${autoplay()}`;
+    clearHistory = () => {
+        sessionStorage.clear();
+        this.setState({ historyCleared: !this.state.historyCleared })
+    }
 
-    return (
-        <div className="col s8 youTubeFrame">
-            <iframe title="main video" id="ytplayer" type="text/html" width="600" height="340"
-                src={youTubeSrc}
-                frameBorder="0"></iframe>
-            <p id="mainVideoTitle">{props.videos[isSideVideo()].title}</p>
-            <p>{props.videos[isSideVideo()].description}</p>
-        </div>
-    );
+
+    render() {
+        const youTubeSrc = `https://www.youtube.com/embed/${this.props.mainVideo.id}?autoplay=0`;
+        return (
+            <Fragment>
+                <div className="col s8 youTubeFrame">
+                    <iframe title="main video" id="ytplayer" type="text/html" width="600" height="340"
+                        src={youTubeSrc}
+                        frameBorder="0"></iframe>
+                    <p id="mainVideoTitle">{this.props.mainVideo.title}</p>
+                    <p>{this.props.mainVideo.description}</p>
+
+                    <div className="col s12 m12">
+                        <div className="row">
+                            <span className="prevVidSpan">Previously viewed videos:</span>
+                            <span className="historyClearSpan right" onClick={this.clearHistory}>clear history</span>
+                        </div>
+                        <div className="row">
+                            {this.mapPreviousVideos()}
+                        </div>
+                    </div>
+                </div>
+            </Fragment>
+        );
+    }
+
 }
-
 
 
 export { MainVideo }; 
