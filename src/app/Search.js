@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import debounce from 'lodash/debounce'
+
 
 class Search extends Component {
     constructor(props) {

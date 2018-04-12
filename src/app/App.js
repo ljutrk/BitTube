@@ -31,11 +31,11 @@ class App extends Component {
     this.fetchMeStuff(searchInput)
   }
 
-  previousVideosFetchHandler = (videoId) => {
-    fetchVideos(videoId)
+  previousVideosFetchHandler = (videoTitle) => {
+    fetchVideos(videoTitle)
       .then(video => {
         this.setState({ mainVideo: video[0] })
-      })   
+      })
   }
 
   sideVideoFetchHandler = (sideVideoIndex) => {
@@ -51,7 +51,17 @@ class App extends Component {
   }
 
   render() {
-    
+    //   var f = function() {
+    //     console.log("11");
+
+    //   }
+
+    // var f2 = debounce(f, 5000)
+
+    // f2()
+    // f2()
+    // f2()
+
     if (this.state.videos.length === 0) {
       return <h3>Loading...</h3>
     }
