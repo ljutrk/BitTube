@@ -10,6 +10,7 @@ class App extends Component {
     super(props);
     this.state = {
       videos: [],
+      mainVideo: "",
       defaultSearch: "javaScript",
       sideVideoIndex: ""
     }
@@ -22,7 +23,7 @@ class App extends Component {
   fetchMeStuff = (searchInput) => {
     fetchVideos(searchInput)
       .then(videos => {
-        this.setState({ videos })
+        this.setState({ videos, mainVideo: videos[0] })
       })
   }
 
@@ -30,8 +31,15 @@ class App extends Component {
     this.fetchMeStuff(searchInput)
   }
 
+  previousVideosFetchHandler = (videoId) => {
+    fetchVideos(videoId)
+      .then(video => {
+        this.setState({ mainVideo: video[0] })
+      })   
+  }
+
   sideVideoFetchHandler = (sideVideoIndex) => {
-    this.setState({ sideVideoIndex })
+    this.setState({ mainVideo: this.state.videos[sideVideoIndex] })
     if (sessionStorage.key("watchedVideos") === null) {
       let storage = [this.state.videos[sideVideoIndex]]
       sessionStorage.setItem("watchedVideos", JSON.stringify(storage));
@@ -43,16 +51,17 @@ class App extends Component {
   }
 
   render() {
+    
     if (this.state.videos.length === 0) {
       return <h3>Loading...</h3>
     }
 
     return (
       <Fragment>
-        <div class="container">
+        <div className="container">
           <Search searchFetchHandler={this.searchFetchHandler} />
           <div className="row">
-            <MainVideo videos={this.state.videos} sideVideoIndex={this.state.sideVideoIndex} />
+            <MainVideo mainVideo={this.state.mainVideo} previousVideosFetchHandler={this.previousVideosFetchHandler} />
             <SideVideos videos={this.state.videos} clickHandler={this.sideVideoFetchHandler} />
           </div>
         </div>

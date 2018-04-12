@@ -1,14 +1,18 @@
 import React from 'react';
 
-const PreviousVideo = ({video}) => {
+const PreviousVideo = ({ video, previousVideosFetchHandler }) => {
+
+    const clickHandler = (e) => {
+        previousVideosFetchHandler(e.target.id)
+    }
 
     return (
-            <div class="col s12 m6">
-                <div class="previousVideos">
-                    <img id={video.id} src={video.thumbnail} />
-                    <p>{video.title}</p>
-                </div>
+        <div className="col s12 m6">
+            <div className="previousVideos">
+                <img onClick={clickHandler} id={video.id} src={video.thumbnail} alt="" />
+                <p>{video.title}</p>
             </div>
+        </div>
     );
 }
 

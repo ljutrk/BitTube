@@ -9,26 +9,12 @@ class MainVideo extends Component {
         }
     }
 
-    isSideVideo = () => {
-        if (this.props.sideVideoIndex !== "") {
-            return this.props.sideVideoIndex
-        }
-        return 0
-    }
-
-    autoplay = () => {
-        if (this.props.sideVideoIndex !== "") {
-            return 1
-        }
-        return 0
-    }
-
     mapPreviousVideos = () => {
         if (sessionStorage.key("watchedVideos") === null) {
             return
         } else {
-            return JSON.parse(sessionStorage.getItem("watchedVideos")).reverse().map(video => {
-                return <PreviousVideo video={video} />
+            return JSON.parse(sessionStorage.getItem("watchedVideos")).reverse().map((video, index) => {
+                return <PreviousVideo key={index} video={video} previousVideosFetchHandler={this.props.previousVideosFetchHandler} />
             })
         }
     }
@@ -40,22 +26,22 @@ class MainVideo extends Component {
 
 
     render() {
-        const youTubeSrc = `https://www.youtube.com/embed/${this.props.videos[this.isSideVideo()].id}?autoplay=${this.autoplay()}`;
+        const youTubeSrc = `https://www.youtube.com/embed/${this.props.mainVideo.id}?autoplay=0`;
         return (
             <Fragment>
                 <div className="col s8 youTubeFrame">
                     <iframe title="main video" id="ytplayer" type="text/html" width="600" height="340"
                         src={youTubeSrc}
                         frameBorder="0"></iframe>
-                    <p id="mainVideoTitle">{this.props.videos[this.isSideVideo()].title}</p>
-                    <p>{this.props.videos[this.isSideVideo()].description}</p>
+                    <p id="mainVideoTitle">{this.props.mainVideo.title}</p>
+                    <p>{this.props.mainVideo.description}</p>
 
-                    <div class="col s12 m12">
-                        <div class="row">
-                            <span class="prevVidSpan">Previously viewed videos:</span>
-                            <span class="historyClearSpan right" onClick={this.clearHistory}>clear history</span>
+                    <div className="col s12 m12">
+                        <div className="row">
+                            <span className="prevVidSpan">Previously viewed videos:</span>
+                            <span className="historyClearSpan right" onClick={this.clearHistory}>clear history</span>
                         </div>
-                        <div class="row">
+                        <div className="row">
                             {this.mapPreviousVideos()}
                         </div>
                     </div>
