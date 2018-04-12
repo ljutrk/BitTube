@@ -26,12 +26,20 @@ class App extends Component {
       })
   }
 
-  searchFetchHandler = (searchInput) => {    
+  searchFetchHandler = (searchInput) => {
     this.fetchMeStuff(searchInput)
   }
 
   sideVideoFetchHandler = (sideVideoIndex) => {
     this.setState({ sideVideoIndex })
+    if (sessionStorage.key("watchedVideos") === null) {
+      let storage = [this.state.videos[sideVideoIndex]]
+      sessionStorage.setItem("watchedVideos", JSON.stringify(storage));
+    } else {
+      let storage = JSON.parse(sessionStorage.getItem("watchedVideos"))
+      storage.push(this.state.videos[sideVideoIndex])
+      sessionStorage.setItem("watchedVideos", JSON.stringify(storage));
+    }
   }
 
   render() {
@@ -44,8 +52,8 @@ class App extends Component {
         <div class="container">
           <Search searchFetchHandler={this.searchFetchHandler} />
           <div className="row">
-              <MainVideo videos={this.state.videos} sideVideoIndex={this.state.sideVideoIndex} />
-              <SideVideos videos={this.state.videos} clickHandler={this.sideVideoFetchHandler} />
+            <MainVideo videos={this.state.videos} sideVideoIndex={this.state.sideVideoIndex} />
+            <SideVideos videos={this.state.videos} clickHandler={this.sideVideoFetchHandler} />
           </div>
         </div>
       </Fragment>
