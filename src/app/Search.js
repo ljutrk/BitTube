@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+
+
 class Search extends Component {
     constructor(props) {
         super(props);
@@ -8,11 +10,11 @@ class Search extends Component {
         }
     }
 
-    searchHandler = (e) => {        
+    searchHandler = (e) => {
         this.setState({ searchInput: e.target.value })
-        this.props.searchFetchHandler(e.target.value)        
+        this.props.searchFetchHandler(e.target.value)
     }
-    
+
     render() {
         return (
             <nav>

@@ -4,6 +4,7 @@ import { fetchVideos } from '../services/apiService';
 import { MainVideo } from './MainVideo';
 import { Search } from './Search';
 import { SideVideos } from './SideVideos';
+import  debounce  from 'lodash/debounce';
 
 class App extends Component {
   constructor(props) {
@@ -27,15 +28,15 @@ class App extends Component {
       })
   }
 
-  searchFetchHandler = (searchInput) => {
+  searchFetchHandler = debounce((searchInput) => {
     this.fetchMeStuff(searchInput)
-  }
+  },1000)
 
-  previousVideosFetchHandler = (videoId) => {
-    fetchVideos(videoId)
+  previousVideosFetchHandler = (videoTitle) => {
+    fetchVideos(videoTitle)
       .then(video => {
         this.setState({ mainVideo: video[0] })
-      })   
+      })
   }
 
   sideVideoFetchHandler = (sideVideoIndex) => {
@@ -50,8 +51,11 @@ class App extends Component {
     }
   }
 
+  componentDidUpdate() {
+    window.scrollTo(0,0);
+  }
+
   render() {
-    
     if (this.state.videos.length === 0) {
       return <h3>Loading...</h3>
     }

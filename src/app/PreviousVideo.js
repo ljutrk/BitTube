@@ -9,7 +9,7 @@ const PreviousVideo = ({ video, previousVideosFetchHandler }) => {
     return (
         <div className="col s12 m6">
             <div className="previousVideos">
-                <img onClick={clickHandler} id={video.id} src={video.thumbnail} alt="" />
+                <img onClick={clickHandler} id={video.title} src={video.thumbnail} alt="" />
                 <p>{video.title}</p>
             </div>
         </div>
