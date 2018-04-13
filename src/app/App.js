@@ -4,6 +4,7 @@ import { fetchVideos } from '../services/apiService';
 import { MainVideo } from './MainVideo';
 import { Search } from './Search';
 import { SideVideos } from './SideVideos';
+import  debounce  from 'lodash/debounce';
 
 class App extends Component {
   constructor(props) {
@@ -27,9 +28,9 @@ class App extends Component {
       })
   }
 
-  searchFetchHandler = (searchInput) => {
+  searchFetchHandler = debounce((searchInput) => {
     this.fetchMeStuff(searchInput)
-  }
+  },1000)
 
   previousVideosFetchHandler = (videoTitle) => {
     fetchVideos(videoTitle)
@@ -50,18 +51,11 @@ class App extends Component {
     }
   }
 
+  componentDidUpdate() {
+    window.scrollTo(0,0);
+  }
+
   render() {
-    //   var f = function() {
-    //     console.log("11");
-
-    //   }
-
-    // var f2 = debounce(f, 5000)
-
-    // f2()
-    // f2()
-    // f2()
-
     if (this.state.videos.length === 0) {
       return <h3>Loading...</h3>
     }
